@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <title>Document</title>
+</head>
+<body onload="myFunction()" style="margin:0;">
+
+    <div id="loader"></div>
+    
+    <div style="display:none;" id="myDiv" class="animate-bottom">
+    <header>
+        <h3>T&T</h3>
+        <nav>
+            <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">contact</a></li>
+                <li><a href="#">ticket</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1>Welcome to<br>Tour<span style="-webkit-text-stroke: 1px white; color: rgba(0,0,0,0);"> & </span>Travels</h1><br>
+    <div class="book"><a href="#">Book Ticket</a></div>
+</div>
+<script>
+    var myVar;
+    
+    function myFunction() {
+      myVar = setTimeout(showPage, 000);
+    }
+    
+    function showPage() {
+      document.getElementById("loader").style.display = "none";
+      document.getElementById("myDiv").style.display = "block";
+    }
+    </script>
+</body>
+</html>
