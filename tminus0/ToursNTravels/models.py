@@ -1,18 +1,23 @@
 from django.db import models
 
 
+class User(models.Model):
+    username = models.CharField(max_length=40)
+    email = models.CharField(max_length=35, unique=True, primary_key=True)
+    password = models.CharField(max_length=20)
+
+
 class Location(models.Model):
     city = models.CharField(max_length=30)
     region = models.CharField(max_length=2)
     image = models.CharField(max_length=200)
-    discription = models.CharField(max_length=1000)
 
 
 class Review(models.Model):
     review = models.CharField(max_length=1000)
     rating = models.IntegerField()
     author = models.CharField(max_length=30)
-    submissionDate = models.DateField(auto_now=True)
+    submissionDate = models.DateField()
 
 
 class History(models.Model):
@@ -39,7 +44,6 @@ class Flight(models.Model):
     numSeatsRemainingEconomy = models.IntegerField()
     numSeatsRemainingBusiness = models.IntegerField()
     numSeatsRemainingFirst = models.IntegerField()
-    discount = models.IntegerField()
 
 
 class Train(models.Model):
@@ -54,7 +58,6 @@ class Train(models.Model):
     numSeatsRemainingEconomy = models.IntegerField()
     numSeatsRemainingBusiness = models.IntegerField()
     numSeatsRemainingFirst = models.IntegerField()
-    discount = models.IntegerField()
 
 
 class Hotel(models.Model):
@@ -62,7 +65,6 @@ class Hotel(models.Model):
     address = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
     companyName = models.CharField(max_length=30, default='hotel')
-    discount = models.IntegerField()
 
 
 class Payment(models.Model):
@@ -77,16 +79,6 @@ class Attraction(models.Model):
     attractionName = models.CharField(max_length=30)
     attractionDescription = models.CharField(max_length=1000)
     image = models.CharField(max_length=200)
-
-
-class User(models.Model):
-    username = models.CharField(max_length=40)
-    email = models.CharField(max_length=35, unique=True, primary_key=True)
-    password = models.CharField(max_length=20)
-    flight = models.ForeignKey(Flight, on_delete=models.CASCADE)
-    train = models.ForeignKey(Train, on_delete=models.CASCADE)
-    hotel = models.ForeignKey(Hotel, on_delete=models.CASCADE)
-
 
 # class Attraction(models.Model):
 # 	#location = models.ManyToManyField(Location)
