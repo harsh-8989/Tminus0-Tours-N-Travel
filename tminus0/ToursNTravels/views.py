@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
-
+from developer.models import user_admin as user
 import jwt
 import json
 import datetime
@@ -53,8 +53,22 @@ def index(request):
 @csrf_exempt
 def login(request):
     if request.method == 'POST':
+
         email = request.POST['email']
         password = request.POST['password']
+        try:
+            auth = user.objects.get(email=email)
+        except user.DoesNotExist:
+            auth = None
+        if auth is not None:
+            try:
+                auth = user.objects.get(email=email, password=password)
+            except user.DoesNotExist:
+                auth = None
+            if auth is not None:
+                return render(request, 'developer/index.html')
+            else:
+                return render(request, 'login.html')
         check_user = User.objects.filter(email=email)
         valid_user = (len(list(check_user)) == 1)
         if (valid_user):

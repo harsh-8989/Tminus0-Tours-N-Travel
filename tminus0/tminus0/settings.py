@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "ToursNTravels"
+    "ToursNTravels",
+    "developer"
 ]
 
 MIDDLEWARE = [
@@ -81,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'ToursNTravels',
         'USER': 'root',
-        'PASSWORD': "chetan7@IIITA",
+        'PASSWORD': "password",
         'HOST': 'localhost',
         'PORT': '3306'
     }
