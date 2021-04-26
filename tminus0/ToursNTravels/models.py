@@ -1,26 +1,26 @@
 from django.db import models
 
 
-class User(models.Model):
+class user(models.Model):
     username = models.CharField(max_length=40)
     email = models.CharField(max_length=35, unique=True, primary_key=True)
     password = models.CharField(max_length=20)
 
 
-class Location(models.Model):
+class location(models.Model):
     city = models.CharField(max_length=30)
     region = models.CharField(max_length=2)
-    image = models.CharField(max_length=200)
+    # image = models.CharField(max_length=200)
 
 
-class Review(models.Model):
-    review = models.CharField(max_length=1000)
+class review(models.Model):
     rating = models.IntegerField()
+    review = models.CharField(max_length=1000)
     author = models.CharField(max_length=30)
     submissionDate = models.DateField()
 
 
-class History(models.Model):
+class history(models.Model):
     userEmail = models.CharField(max_length=36)
     BOOKING_TYPES = [('flight', 'Flight'),
                      ('train', 'Train'), ('hotel', 'Hotel')]
@@ -32,7 +32,7 @@ class History(models.Model):
     location = models.CharField(max_length=30, default='location')
 
 
-class Flight(models.Model):
+class flight(models.Model):
     companyName = models.CharField(max_length=30)
     sourceLocation = models.CharField(max_length=30)
     destinationLocation = models.CharField(max_length=30)
@@ -46,7 +46,7 @@ class Flight(models.Model):
     numSeatsRemainingFirst = models.IntegerField()
 
 
-class Train(models.Model):
+class train(models.Model):
     companyName = models.CharField(max_length=30)
     sourceLocation = models.CharField(max_length=30)
     destinationLocation = models.CharField(max_length=30)
@@ -60,21 +60,21 @@ class Train(models.Model):
     numSeatsRemainingFirst = models.IntegerField()
 
 
-class Hotel(models.Model):
+class hotel(models.Model):
     dailyCost = models.DecimalField(max_digits=6, decimal_places=2)
     address = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
     companyName = models.CharField(max_length=30, default='hotel')
 
 
-class Payment(models.Model):
+class payment(models.Model):
     PAYMENT_TYPES = [('credit', 'Credit'), ('debit', 'Debit')]
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     paymentType = models.CharField(choices=PAYMENT_TYPES, max_length=6)
     cardNo = models.CharField(max_length=16)
 
 
-class Attraction(models.Model):
+class attraction(models.Model):
     city = models.CharField(max_length=30, default='Stony Brook')
     attractionName = models.CharField(max_length=30)
     attractionDescription = models.CharField(max_length=1000)

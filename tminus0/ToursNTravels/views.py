@@ -2,12 +2,12 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
-from developer.models import user_admin as user
+from developer.models import user_admin
 import jwt
 import json
 import datetime
 
-from .models import User, Location, History, Flight, Train, Hotel, Payment, Attraction, Review
+from .models import user, location, history, flight, train, hotel, payment, attraction, review
 
 json_file = open('tminus0/config_vars.json').read()
 data = json.loads(json_file)
@@ -31,17 +31,17 @@ def index(request):
         flightClass = request.POST['class']
         print(request.POST)
         if (flightClass == 'economy'):
-            flights = Flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
         elif (flightClass == 'business'):
-            flights = Flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
         else:
-            flights = Flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
@@ -57,19 +57,19 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         try:
-            auth = user.objects.get(email=email)
-        except user.DoesNotExist:
+            auth = user_admin.objects.get(email=email)
+        except user_admin.DoesNotExist:
             auth = None
         if auth is not None:
             try:
-                auth = user.objects.get(email=email, password=password)
-            except user.DoesNotExist:
+                auth = user_admin.objects.get(email=email, password=password)
+            except user_admin.DoesNotExist:
                 auth = None
             if auth is not None:
                 return render(request, 'developer/index.html')
             else:
                 return render(request, 'login.html')
-        check_user = User.objects.filter(email=email)
+        check_user = user.objects.filter(email=email)
         valid_user = (len(list(check_user)) == 1)
         if (valid_user):
             current_user = email
@@ -91,11 +91,11 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         print(request.POST)
-        existing_email = User.objects.filter(email=email)
+        existing_email = user.objects.filter(email=email)
         is_new_user = (len(list(existing_email)) == 0)
         print(is_new_user)
         if (is_new_user):
-            new_user = User.objects.create(
+            new_user = user.objects.create(
                 username=username, email=email, password=password)
             new_user.save()
             return render(request, 'signup.html', {'msg': 'Sign up successful'})
@@ -108,18 +108,18 @@ def signup(request):
 @csrf_exempt
 def reviews(request):
     if request.method == 'POST':
-        review = request.POST['review']
+        Review = request.POST['review']
         rating = request.POST['rating']
         author = request.session['user_name']
         current_date = datetime.datetime.today().strftime('%Y-%m-%d')
-        user_exists = Review.objects.filter(author=author)
+        user_exists = review.objects.filter(author=author)
         if (len(list(user_exists)) == 0):
-            new_review = Review.objects.create(
-                review=review, rating=rating, submissionDate=current_date, author=author)
-        reviews = Review.objects.all()
+            new_review = review.objects.create(
+                Review=review, rating=rating, submissionDate=current_date, author=author)
+        reviews = review.objects.all()
         return render(request, 'reviews.html', {'results': 'yes', 'some_list': reviews})
     else:
-        reviews = Review.objects.all()
+        reviews = review.objects.all()
         return render(request, 'reviews.html', {'results': 'yes', 'some_list': reviews})
 
 
@@ -132,7 +132,7 @@ def hotels(request):
         locationCity = locationArr[0]
         startdate = request.POST['startdate']
         enddate = request.POST['enddate']
-        hotels = Hotel.objects.filter(city=locationCity)
+        hotels = hotel.objects.filter(city=locationCity)
         hotels = list(hotels)
         #decoded = jwt.verify((request.session.token), data["SECRET_KEY"]);
         #valid = jwt.decode(encoded, secret, algorithms=['HS256'])
@@ -160,21 +160,21 @@ def trains(request):
         day = int(startdate[2])
         trainClass = request.POST['class']
         print(request.POST)
-        trains = Train.objects.filter(sourceLocation=sourceCity).filter(
+        trains = train.objects.filter(sourceLocation=sourceCity).filter(
             destinationLocation=destinationCity).filter(departureDate=datetime.date(year, month, day))
         trains = list(trains)
         if (trainClass == 'economy'):
-            trains = Train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
         elif (trainClass == 'business'):
-            trains = Train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
         else:
-            trains = Train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
@@ -190,10 +190,10 @@ def explore(request):
         locationArr = location.split(',')
         city = locationArr[0]
         region = locationArr[1]
-        location = Location.objects.filter(city=city)
-        attraction = Attraction.objects.filter(city=city)
-        location = list(location)
-        return render(request, 'explore.html', {"results": "yes", "location": location, "some_list": attraction})
+        Location = location.objects.filter(city=city)
+        Attraction = attraction.objects.filter(city=city)
+        Location = list(location)
+        return render(request, 'explore.html', {"results": "yes", "location": Location, "some_list": Attraction})
     else:
         return render(request, 'explore.html')
 
@@ -208,49 +208,49 @@ def book(request):
         current_date = datetime.datetime.today().strftime('%Y-%m-%d')
         if (bookType == 'flight'):
             travelClass = request.GET.get('class')
-            obj = Flight.objects.filter(id=objId).first()
+            obj = flight.objects.filter(id=objId).first()
             if (travelClass == 'economy'):
-                Flight.objects.filter(id=objId).update(
+                flight.objects.filter(id=objId).update(
                     numSeatsRemainingEconomy=obj.numSeatsRemainingEconomy-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareEconomy, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
             elif (travelClass == 'business'):
-                Flight.objects.filter(id=objId).update(
+                flight.objects.filter(id=objId).update(
                     numSeatsRemainingBusiness=obj.numSeatsRemainingBusiness-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareBusiness, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
             elif (travelClass == 'first'):
-                Flight.objects.filter(id=objId).update(
+                flight.objects.filter(id=objId).update(
                     numSeatsRemainingFirst=obj.numSeatsRemainingFirst-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareFirst, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
         elif (bookType == 'train'):
             travelClass = request.GET.get('class')
-            obj = Train.objects.filter(id=objId).first()
+            obj = train.objects.filter(id=objId).first()
             if (travelClass == 'economy'):
-                Train.objects.filter(id=objId).update(
+                train.objects.filter(id=objId).update(
                     numSeatsRemainingEconomy=obj.numSeatsRemainingEconomy-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareEconomy, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
             elif (travelClass == 'business'):
-                Train.objects.filter(id=objId).update(
+                train.objects.filter(id=objId).update(
                     numSeatsRemainingBusiness=obj.numSeatsRemainingBusiness-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareBusiness, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
             elif (travelClass == 'first'):
-                Train.objects.filter(id=objId).update(
+                train.objects.filter(id=objId).update(
                     numSeatsRemainingFirst=obj.numSeatsRemainingFirst-1)
-                new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                          paymentAmount=obj.fareFirst, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_transaction.save()
         elif (bookType == 'hotel'):
-            obj = Hotel.objects.filter(id=objId).first()
-            new_transaction = History.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
+            obj = hotel.objects.filter(id=objId).first()
+            new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                      paymentAmount=obj.dailyCost, paymentCardNo=card_number, companyName=obj.companyName, location=obj.address)
             new_transaction.save()
         return render(request, 'book.html', {'msg': 'Booking successful'})
@@ -259,14 +259,14 @@ def book(request):
         bookType = request.GET.get('type')
         if (bookType == 'flight'):
             travelClass = request.GET.get('class')
-            obj = Flight.objects.filter(id=objId)
+            obj = flight.objects.filter(id=objId)
             return render(request, 'book.html', {'booking': 'yes', 'some_list': obj, 'type': bookType, 'class': travelClass})
         elif (bookType == 'train'):
             travelClass = request.GET.get('class')
-            obj = Train.objects.filter(id=objId)
+            obj = train.objects.filter(id=objId)
             return render(request, 'book.html', {'booking': 'yes', 'some_list': obj, 'type': bookType, 'class': travelClass})
         elif (bookType == 'hotel'):
-            obj = Hotel.objects.filter(id=objId)
+            obj = hotel.objects.filter(id=objId)
             return render(request, 'book.html', {'booking': 'yes', 'some_list': obj, 'type': bookType})
         else:
             return render(request, 'book.html')
@@ -276,8 +276,8 @@ def account(request):
     setting = request.GET.get('setting')
     current_user = request.session['current_user']
     if (setting == 'history'):
-        history = History.objects.filter(userEmail=current_user)
-        return render(request, 'account.html', {'setting': setting, 'transactions': history})
+        History = history.objects.filter(userEmail=current_user)
+        return render(request, 'account.html', {'setting': setting, 'transactions': History})
     else:
         return render(request, 'account.html', {'setting': setting})
 
