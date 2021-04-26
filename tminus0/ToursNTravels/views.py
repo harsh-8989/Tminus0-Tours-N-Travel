@@ -198,6 +198,38 @@ def explore(request):
         return render(request, 'explore.html')
 
 
+@csrf_exempt
+def myadmin(request):
+    if request.method == 'POST':
+        secret = data["SECRET_KEY"]
+        location = request.POST['location']
+        locationArr = location.split(',')
+        city = locationArr[0]
+        region = locationArr[1]
+        location = Location.objects.filter(city=city)
+        attraction = Attraction.objects.filter(city=city)
+        location = list(location)
+        return render(request, 'myadmin.html', {"results": "yes", "location": location, "some_list": attraction})
+    else:
+        return render(request, 'myadmin.html')
+
+
+@csrf_exempt
+def index(request):
+    if request.method == 'POST':
+        secret = data["SECRET_KEY"]
+        location = request.POST['location']
+        locationArr = location.split(',')
+        city = locationArr[0]
+        region = locationArr[1]
+        location = Location.objects.filter(city=city)
+        attraction = Attraction.objects.filter(city=city)
+        location = list(location)
+        return render(request, 'index.html', {"results": "yes", "location": location, "some_list": attraction})
+    else:
+        return render(request, 'index.html')
+
+
 def book(request):
     if request.method == 'POST':
         objId = request.GET.get('id')
