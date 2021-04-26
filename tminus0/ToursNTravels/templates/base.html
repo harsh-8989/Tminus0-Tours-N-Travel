@@ -4,7 +4,7 @@
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>TravelLite</title>
+  <title>TMinus0</title>
 
   <!-- CSS  -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -14,7 +14,7 @@
 <body>
   <nav class="white" role="navigation">
     <div class="nav-wrapper container">
-      <a id="logo-container" href="/" class="brand-logo teal-text">TravelLite</a>
+      <a id="logo-container" href="/" class="brand-logo purple-text">Tours&Travels</a>
       <ul class="right hide-on-med-and-down">
         <li><a href="/">Flights</a></li>
         <li><a href="/hotels">Hotels</a></li>
@@ -23,7 +23,7 @@
         <li><a href="/reviews">Review</a></li>
         <!-- Dropdown Trigger -->
 
-        <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>My Account</a>
+        <a class='dropdown-trigger btn purple' href='#' data-target='dropdown1'>My Account</a>
         {% if request.session.current_user %}        
         <ul id='dropdown1' class='dropdown-content'>
           <li><a href="/account">Settings</a></li>
@@ -31,7 +31,7 @@
         </ul>
         {% else %}
         <!-- Dropdown Structure -->
-        <ul id='dropdown1' class='dropdown-content'>
+        <ul id='dropdown1' class='dropdown-content purple-text'>
           <li><a href="/login">Log In</a></li>
           <li><a href="/signup">Sign Up</a></li>
         </ul>
@@ -39,7 +39,7 @@
       </ul>
       
       <ul id="nav-mobile" class="sidenav">
-        <li><a href="/">TravelLite</a></li>
+        <li><a href="/">Tours&Travels</a></li>
         <li class="divider" tabindex="-1"></li>
         <li><a href="/">Flights</a></li>
         <li><a href="/hotels">Hotels</a></li>
@@ -51,7 +51,7 @@
         <li><a href="/account">Settings</a></li>
         <li><a href="/logout">Log Out</a></li>
         {% else %}
-        <li><a class="teal-text" href="/login">Log In</a></li>
+        <li><a class="purple-text" href="/login">Log In</a></li>
         <li><a href="/signup">Sign Up</a></li>
         {% endif %}
       </ul>
@@ -62,24 +62,24 @@
   {% block content %}
   {% endblock content %}
 
-  <footer class="page-footer teal">
+  <footer class="page-footer purple">
     <div class="container">
       <div class="row">
         <div class="col l8 s8">
-          <h5 class="white-text">Team Bio</h5>
+          <h5 class="white-text">Team TMinus0</h5>
           <p class="grey-text text-lighten-4">We are a team of college students working hard to provide the best possible service to users.</p>
         </div>
         <div class="col l4 s4">
           <h5 class="white-text">More</h5>
           <ul>
-            <li><a class="white-text" href="#!">Our design</a></li>
+            <li><a class="white-text" href="https://bchetanrao.github.io">Our design</a></li>
           </ul>
         </div>
       </div>
     </div>
     <div class="footer-copyright">
       <div class="container">
-      Made by <a class="brown-text text-lighten-3" href="http://materializecss.com">Materialize</a>
+         Made by- <span style="padding-left: 3em;">Harsh Mahajan</span> <span style="padding-left: 3em;">Aditya Raj</span> <span style="padding-left: 3em;"><a class="white-text text-lighten-3" href="http://bchetanrao.github.io">B Chetan Rao</a></span> <span style="padding-left: 3em;">Hitika Rajesh Kumar</span>
       </div>
     </div>
   </footer>

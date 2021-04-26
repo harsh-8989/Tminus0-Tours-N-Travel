@@ -9,10 +9,10 @@
         <form action="" method="POST">
           {% csrf_token %}
         <div class="row center">
-          <h5 class="header col s12 light">Find your next train</h5>
+          <h5 class="header col s12 light purple-text">Find your next train</h5>
         <div class="input-field col l6 s12">
           <i class="material-icons prefix">train</i>
-          <input type="text" name="source" id="autocomplete-input" class="autocomplete">
+          <input type="text" name="source" id="autocomplete-input" class="autocomplete purple-text">
           <label for="autocomplete-input">Source</label>
         </div>
         <div class="input-field col l6 s12">
@@ -51,7 +51,7 @@
         <div class="row center">
       <div class="container">
         {% for obj in some_list %}
-          <div class="card teal lighten-2">
+          <div class="card purple lighten-2">
             <div class="card-content white-text">
               <span class="card-title">{{obj.companyName}}</span>
               <div class="row" style="font-size: 16px;">

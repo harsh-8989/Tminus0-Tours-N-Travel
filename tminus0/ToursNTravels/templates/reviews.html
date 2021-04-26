@@ -9,7 +9,7 @@
         <form action="" method="POST">
         {% csrf_token %}
         <div class="row center">
-          <h5 class="header col s12 light">Review our service</h5>
+          <h5 class="header col s12 light purple-text">Review our service</h5>
         <div class="input-field col l9 s12">
           <i class="material-icons prefix">rate_review</i>
           <textarea id="textarea1" name="review" class="materialize-textarea"></textarea>
@@ -29,13 +29,13 @@
         </div>
         {% if request.session.current_user %}
         <div class="row center">
-          <button class="btn waves-effect waves-light" style="width: 300px" type="submit">
+          <button class="btn waves-effect waves-light purple" style="width: 300px" type="submit">
               Submit
           </button>
         </div>
         {% else %}
         <div class="row center">
-          <button disabled class="btn waves-effect waves-light" style="width: 300px" type="submit">
+          <button disabled class="btn waves-effect waves-light purple" style="width: 300px" type="submit">
               Submit
           </button>
         </div>
@@ -52,7 +52,7 @@
   <div class="row center">
       <div class="col s12 m12">
         {% for obj in some_list %}
-          <div class="card teal lighten-2">
+          <div class="card purple lighten-2">
             <div class="card-content white-text">
               <span class="card-title">{{obj.author}} says...</span>
               <p>Ratings: {{obj.rating}} | {{obj.submissionDate}}</p>
