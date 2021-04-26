@@ -8,6 +8,12 @@ go
               PRIMARY KEY (email)
               
        );
+CREATE TABLE user_admin (
+       email VARCHAR(35) NOT NULL,
+       username VARCHAR(40),
+       password VARCHAR(20) NOT NULL,
+       PRIMARY KEY (email)
+);
 CREATE TABLE review (
        id INT NOT NULL AUTO_INCREMENT,
        numStars INT NOT NULL,
