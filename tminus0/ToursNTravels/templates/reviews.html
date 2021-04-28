@@ -54,7 +54,7 @@
         {% for obj in some_list %}
           <div class="card purple lighten-2">
             <div class="card-content white-text">
-              <span class="card-title">{{obj.author}} says...</span>
+              <span class="card-title">{{obj.author.username}} says...</span>
               <p>Ratings: {{obj.rating}} | {{obj.submissionDate}}</p>
               <p>{{obj.review}}</p>
             </div>

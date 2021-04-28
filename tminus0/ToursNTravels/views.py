@@ -7,10 +7,13 @@ import jwt
 import json
 import datetime
 
-from .models import user, location, history, flight, train, hotel, payment, attraction, review
-
+# from .models import user, location, flight, train, hotel, payment, attraction, review
+# from .models import history, user, location, review, transportation, booking, flight, train, hotel, purchase, payment, attraction
+from ToursNTravels.models import *
+numreview = len(review.objects.all())
 json_file = open('tminus0/config_vars.json').read()
 data = json.loads(json_file)
+user_email = None
 
 
 @csrf_exempt
@@ -107,16 +110,22 @@ def signup(request):
 
 @csrf_exempt
 def reviews(request):
+    global numreview
+
     if request.method == 'POST':
         Review = request.POST['review']
         rating = request.POST['rating']
-        author = request.session['user_name']
+        author = request.session['current_user']
+        author = user.objects.get(email=author)
         current_date = datetime.datetime.today().strftime('%Y-%m-%d')
         user_exists = review.objects.filter(author=author)
-        if (len(list(user_exists)) == 0):
-            new_review = review.objects.create(
-                Review=review, rating=rating, submissionDate=current_date, author=author)
+        # if (len(list(user_exists)) == 0):
+        numreview = int(len(review.objects.all()))+1
+        print(review)
+        new_review = review.objects.create(id=numreview,
+                                           review=Review, rating=rating, submissionDate=current_date, author=author)
         reviews = review.objects.all()
+
         return render(request, 'reviews.html', {'results': 'yes', 'some_list': reviews})
     else:
         reviews = review.objects.all()
@@ -186,16 +195,49 @@ def trains(request):
 def explore(request):
     if request.method == 'POST':
         secret = data["SECRET_KEY"]
+        Location = request.POST['location']
+        # locationArr = Location.split(',')
+        city = Location
+        # region = locationArr[1]
+        Location = location.objects.filter(city=city)
+        temp = location.objects.get(city=city)
+        Attraction = attraction.objects.filter(location=temp)
+        Location = list(Location)
+        return render(request, 'explore.html', {"results": "yes", "location": Location, "some_list": Attraction})
+    else:
+        return render(request, 'explore.html')
+
+
+@csrf_exempt
+def myadmin(request):
+    if request.method == 'POST':
+        secret = data["SECRET_KEY"]
         location = request.POST['location']
         locationArr = location.split(',')
         city = locationArr[0]
         region = locationArr[1]
         Location = location.objects.filter(city=city)
         Attraction = attraction.objects.filter(city=city)
-        Location = list(location)
-        return render(request, 'explore.html', {"results": "yes", "location": Location, "some_list": Attraction})
+        location = list(location)
+        return render(request, 'myadmin.html', {"results": "yes", "location": location, "some_list": attraction})
     else:
-        return render(request, 'explore.html')
+        return render(request, 'myadmin.html')
+
+
+@csrf_exempt
+def index(request):
+    if request.method == 'POST':
+        secret = data["SECRET_KEY"]
+        location = request.POST['location']
+        locationArr = location.split(',')
+        city = locationArr[0]
+        region = locationArr[1]
+        Location = location.objects.filter(city=city)
+        Attraction = attraction.objects.filter(location=location)
+        location = list(location)
+        return render(request, 'index.html', {"results": "yes", "location": location, "some_list": attraction})
+    else:
+        return render(request, 'index.html')
 
 
 def book(request):
@@ -276,7 +318,7 @@ def account(request):
     setting = request.GET.get('setting')
     current_user = request.session['current_user']
     if (setting == 'history'):
-        History = history.objects.filter(userEmail=current_user)
+        History = purchase.objects.filter(userEmail=current_user)
         return render(request, 'account.html', {'setting': setting, 'transactions': History})
     else:
         return render(request, 'account.html', {'setting': setting})
@@ -284,6 +326,7 @@ def account(request):
 
 def logout(request):
     # clear session
+    user_email = None
     del request.session['current_user']
     del request.session['user_name']
     return render(request, 'login.html', {'msg': 'Logout successful'})

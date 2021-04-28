@@ -1,7 +1,7 @@
 CREATE DATABASE ToursNTravels
 go
        /* ENTITIES */
-       CREATE TABLE ToursNTravels_user (
+       CREATE TABLE user (
               email VARCHAR(35) NOT NULL,
               username VARCHAR(40),
               password VARCHAR(20) NOT NULL,
@@ -13,20 +13,20 @@ CREATE TABLE developer_user_admin (
        password VARCHAR(20) NOT NULL,
        PRIMARY KEY (email)
 );
-CREATE TABLE ToursNTravels_review (
+CREATE TABLE review (
        id INT NOT NULL AUTO_INCREMENT,
        numStars INT NOT NULL,
        detailedReview VARCHAR(1000),
        submissionDate DATETIME NOT NULL,
        author VARCHAR(35) NOT NULL,
        PRIMARY KEY (id),
-       FOREIGN KEY (author) REFERENCES ToursNTravels_user(email),
+       FOREIGN KEY (author) REFERENCES user(email),
        CHECK (
               numStars >= 1
               AND numStars <= 5
        )
 );
-CREATE TABLE ToursNTravels_location (
+CREATE TABLE location (
        id INT NOT NULL AUTO_INCREMENT,
        city VARCHAR(30) NOT NULL,
        region VARCHAR(2) NOT NULL,
@@ -34,12 +34,12 @@ CREATE TABLE ToursNTravels_location (
        PRIMARY KEY (id),
        UNIQUE (city, region, country)
 );
-CREATE TABLE ToursNTravels_booking (
+CREATE TABLE booking (
        id INT NOT NULL AUTO_INCREMENT,
        startDate DATE NOT NULL,
        PRIMARY KEY (id)
 );
-CREATE TABLE ToursNTravels_transportation (
+CREATE TABLE transportation (
        id INT NOT NULL,
        departureTime TIME NOT NULL,
        sourceLocation INT NOT NULL,
@@ -50,31 +50,31 @@ CREATE TABLE ToursNTravels_transportation (
        numSeatsRemainingEconomy INT NOT NULL,
        numSeatsRemainingBusiness INT NOT NULL,
        numSeatsRemainingFirst INT NOT NULL,
-       FOREIGN KEY (id) REFERENCES ToursNTravels_booking(id),
-       FOREIGN KEY (sourceLocation) REFERENCES ToursNTravels_location(id),
-       FOREIGN KEY (destinationLocation) REFERENCES ToursNTravels_location(id)
+       FOREIGN KEY (id) REFERENCES booking(id),
+       FOREIGN KEY (sourceLocation) REFERENCES location(id),
+       FOREIGN KEY (destinationLocation) REFERENCES location(id)
 );
-CREATE TABLE ToursNTravels_flight (
+CREATE TABLE flight (
        id INT NOT NULL,
        airline VARCHAR(30) NOT NULL,
-       FOREIGN KEY (id) REFERENCES ToursNTravels_transportation(id)
+       FOREIGN KEY (id) REFERENCES transportation(id)
 );
-CREATE TABLE ToursNTravels_train (
+CREATE TABLE train (
        id INT NOT NULL,
        railroad VARCHAR(30),
-       FOREIGN KEY (id) REFERENCES ToursNTravels_transportation(id)
+       FOREIGN KEY (id) REFERENCES transportation(id)
 );
-CREATE TABLE ToursNTravels_hotel (
+CREATE TABLE hotel (
        id INT NOT NULL,
        endDate DATE NOT NULL,
        dailyCost DECIMAL(6, 2) NOT NULL,
        address VARCHAR(30),
        location INT NOT NULL,
-       FOREIGN KEY (id) REFERENCES ToursNTravels_booking(id),
-       FOREIGN KEY (location) REFERENCES ToursNTravels_location(id),
+       FOREIGN KEY (id) REFERENCES booking(id),
+       FOREIGN KEY (location) REFERENCES location(id),
        CHECK (dailyCost > 0)
 );
-CREATE TABLE ToursNTravels_payment (
+CREATE TABLE payment (
        id INT NOT NULL AUTO_INCREMENT,
        amount DECIMAL(6, 2) NOT NULL,
        paymentType ENUM('debit', 'credit'),
@@ -82,23 +82,23 @@ CREATE TABLE ToursNTravels_payment (
        PRIMARY KEY (id),
        CHECK (amount > 0)
 );
-CREATE TABLE ToursNTravels_attraction (
+CREATE TABLE attraction (
        id INT NOT NULL AUTO_INCREMENT,
        location INT NOT NULL,
        name VARCHAR(30) NOT NULL,
        description VARCHAR(1000),
        image VARCHAR(200) NOT NULL DEFAULT 'tmp.jpg',
        PRIMARY KEY (id),
-       FOREIGN KEY (location) REFERENCES ToursNTravels_location(id)
+       FOREIGN KEY (location) REFERENCES location(id)
 );
 /* RELATIONSHIPS */
-CREATE TABLE ToursNTravels_purchase (
+CREATE TABLE purchase (
        userID VARCHAR(35),
        bookingID INT,
        paymentID INT,
        transactionDate DATETIME,
        PRIMARY KEY (userID, bookingID, paymentID),
-       FOREIGN KEY (userID) REFERENCES ToursNTravels_user(email),
-       FOREIGN KEY (bookingID) REFERENCES ToursNTravels_booking(id),
-       FOREIGN KEY (paymentID) REFERENCES ToursNTravels_payment(id)
+       FOREIGN KEY (userID) REFERENCES user(email),
+       FOREIGN KEY (bookingID) REFERENCES booking(id),
+       FOREIGN KEY (paymentID) REFERENCES payment(id)
 );
