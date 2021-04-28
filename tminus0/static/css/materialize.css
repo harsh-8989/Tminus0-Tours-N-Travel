@@ -2132,7 +2132,7 @@
 }
 
 .transparent {
-  background-color: transparent !important;
+  background-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 .transparent-text {
@@ -6204,7 +6204,7 @@ input[type=tel]:not(.browser-default):focus:not([readonly]),
 input[type=number]:not(.browser-default):focus:not([readonly]),
 input[type=search]:not(.browser-default):focus:not([readonly]),
 textarea.materialize-textarea:focus:not([readonly]) {
-  border-bottom: 1px solid ##a626a6;
+  border-bottom: 1px solid #a626a6;
   -webkit-box-shadow: 0 1px 0 0 #a626a6;
           box-shadow: 0 1px 0 0 #a626a6;
 }

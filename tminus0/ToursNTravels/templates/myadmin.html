@@ -12,7 +12,8 @@
   <link href="{% static 'css/style.css' %}" type="text/css" rel="stylesheet" media="screen,projection"/>
 </head>
 <body>
-  <nav class="white" role="navigation">
+  <div class="bg">
+  <nav class="white " role="navigation">
     <div class="nav-wrapper container">
       <a id="logo-container" href="/" class="brand-logo purple-text">Tours&Travels</a>
       <ul class="right hide-on-med-and-down">
@@ -64,8 +65,12 @@
   {% block content %}
   {% endblock content %}
 
-  <h1 style="text-align: center; padding: 1em;">Welcome!</h1>
-
+  <div class="textbox">
+    <h1>Explore the World</h1><br>
+    <h3>Feed your Wanderlust</h3>
+</div>
+  
+</div>
   <footer class="page-footer purple">
     <div class="container">
       <div class="row">
