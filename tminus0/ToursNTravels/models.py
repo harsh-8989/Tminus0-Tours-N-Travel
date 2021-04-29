@@ -8,12 +8,18 @@ class user(models.Model):
     email = models.CharField(max_length=35, unique=True, primary_key=True)
     password = models.CharField(max_length=20)
 
+    def __str__(self):
+        return self.username
+
 
 class location(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
     city = models.CharField(max_length=30)
     region = models.CharField(max_length=2)
     country = models.CharField(max_length=2, default='US')
+
+    def __str__(self):
+        return self.city
 
 
 class attraction(models.Model):
@@ -26,35 +32,40 @@ class attraction(models.Model):
     attractionDescription = models.CharField(max_length=1000)
     image = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.attractionName
+
 
 class flight(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
-    departureTime = models.TimeField()
-    sourceLocation = models.ForeignKey(
-        location, on_delete=models.CASCADE, default=None, related_name="flight_source")
-    destinationLocation = models.ForeignKey(
-        location, on_delete=models.CASCADE, default=None, related_name="flight_destination")
+    departureDate = models.DateField()
+    sourceLocation = models.CharField(max_length=30)
+    destinationLocation = models.CharField(max_length=30)
     fareEconomy = models.DecimalField(max_digits=6, decimal_places=2)
     fareBusiness = models.DecimalField(max_digits=6, decimal_places=2)
     fareFirst = models.DecimalField(max_digits=6, decimal_places=2)
     numSeatsRemainingEconomy = models.IntegerField()
     numSeatsRemainingBusiness = models.IntegerField()
     numSeatsRemainingFirst = models.IntegerField()
+
+    def __str__(self):
+        return str(self.id)
 
 
 class train(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
-    departureTime = models.TimeField()
-    sourceLocation = models.ForeignKey(
-        location, on_delete=models.CASCADE, default=None, related_name="train_source")
-    destinationLocation = models.ForeignKey(
-        location, on_delete=models.CASCADE, default=None, related_name="train_destination")
+    departureDate = models.DateField()
+    sourceLocation = models.CharField(max_length=30)
+    destinationLocation = models.CharField(max_length=30)
     fareEconomy = models.DecimalField(max_digits=6, decimal_places=2)
     fareBusiness = models.DecimalField(max_digits=6, decimal_places=2)
     fareFirst = models.DecimalField(max_digits=6, decimal_places=2)
     numSeatsRemainingEconomy = models.IntegerField()
     numSeatsRemainingBusiness = models.IntegerField()
     numSeatsRemainingFirst = models.IntegerField()
+
+    def __str__(self):
+        return str(self.id)
 
 
 class booking(models.Model):
@@ -65,6 +76,9 @@ class booking(models.Model):
         flight, on_delete=models.CASCADE, default=None)
     Train = models.ForeignKey(
         train, on_delete=models.CASCADE, default=None)
+
+    def __str__(self):
+        return str(self.id)
 
 
 class review(models.Model):
@@ -82,6 +96,9 @@ class payment(models.Model):
     paymentType = models.CharField(choices=PAYMENT_TYPES, max_length=6)
     cardNo = models.CharField(max_length=16)
 
+    def __str__(self):
+        return str(self.id)
+
 
 class purchase(models.Model):
     transactionDate = models.DateTimeField(auto_now=True)
@@ -98,3 +115,6 @@ class hotel(models.Model):
     address = models.CharField(max_length=30)
     city = models.CharField(max_length=30)
     companyName = models.CharField(max_length=30, default='hotel')
+
+    def __str__(self):
+        return self.companyName

@@ -21,11 +21,11 @@ def index(request):
     if request.method == 'POST':
         secret = data["SECRET_KEY"]
         source = request.POST['source']
-        sourceArr = source.split(',')
-        sourceCity = sourceArr[0]
+        # sourceArr = source.split(',')
+        # source = sourceArr[0]
         destination = request.POST['destination']
-        destinationArr = destination.split(',')
-        destinationCity = destinationArr[0]
+        # destinationArr = destination.split(',')
+        # destination = destinationArr[0]
         startdate = request.POST['startdate']
         startdate = startdate.split('-')
         year = int(startdate[0])
@@ -33,23 +33,58 @@ def index(request):
         day = int(startdate[2])
         flightClass = request.POST['class']
         print(request.POST)
+        flights = flight.objects.filter(sourceLocation=source).filter(
+            destinationLocation=destination).filter(departureDate=datetime.date(year, month, day))
+        flights = list(flights)
         if (flightClass == 'economy'):
-            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
         elif (flightClass == 'business'):
-            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
         else:
-            flights = flight.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
             flights = list(flights)
             return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
     else:
         return render(request, 'index.html')
+
+    #     secret = data["SECRET_KEY"]
+    #     source = request.POST['source']
+    #     # sourceArr = source.split(',')
+    #     # source = location.objects.get(city=source)
+    #     destination = request.POST['destination']
+    #     # destinationArr = destination.split(',')
+    #     # destination = location.objects.get(city=destination)
+    #     startdate = request.POST['startdate']
+    #     startdate = startdate.split('-')
+    #     year = int(startdate[0])
+    #     month = int(startdate[1])
+    #     day = int(startdate[2])
+    #     flightClass = request.POST['class']
+    #     print(request.POST)
+    #     if (flightClass == 'economy'):
+    #         flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+    #             departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
+    #         flights = list(flights)
+    #         return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
+    #     elif (flightClass == 'business'):
+    #         flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+    #             departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
+    #         flights = list(flights)
+    #         return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
+    #     else:
+    #         flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+    #             departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
+    #         flights = list(flights)
+    #         return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
+    # else:
+    #     return render(request, 'index.html')
     # figure out how booking will work (send to booking page?)
 
 
@@ -136,9 +171,9 @@ def reviews(request):
 def hotels(request):
     if request.method == 'POST':
         secret = data["SECRET_KEY"]
-        location = request.POST['location']
-        locationArr = location.split(',')
-        locationCity = locationArr[0]
+        Location = request.POST['location']
+        # locationArr = location.split(',')
+        locationCity = Location
         startdate = request.POST['startdate']
         enddate = request.POST['enddate']
         hotels = hotel.objects.filter(city=locationCity)
@@ -157,11 +192,11 @@ def trains(request):
     if request.method == 'POST':
         secret = data["SECRET_KEY"]
         source = request.POST['source']
-        sourceArr = source.split(',')
-        sourceCity = sourceArr[0]
+        # sourceArr = source.split(',')
+        # source = sourceArr[0]
         destination = request.POST['destination']
-        destinationArr = destination.split(',')
-        destinationCity = destinationArr[0]
+        # destinationArr = destination.split(',')
+        # destination = destinationArr[0]
         startdate = request.POST['startdate']
         startdate = startdate.split('-')
         year = int(startdate[0])
@@ -169,21 +204,21 @@ def trains(request):
         day = int(startdate[2])
         trainClass = request.POST['class']
         print(request.POST)
-        trains = train.objects.filter(sourceLocation=sourceCity).filter(
-            destinationLocation=destinationCity).filter(departureDate=datetime.date(year, month, day))
+        trains = train.objects.filter(sourceLocation=source).filter(
+            destinationLocation=destination).filter(departureDate=datetime.date(year, month, day))
         trains = list(trains)
         if (trainClass == 'economy'):
-            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
         elif (trainClass == 'business'):
-            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
         else:
-            trains = train.objects.filter(sourceLocation=sourceCity).filter(destinationLocation=destinationCity).filter(
+            trains = train.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
                 departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
             trains = list(trains)
             return render(request, 'trains.html', {"results": "yes", "some_list": trains, "class": trainClass})
@@ -224,20 +259,20 @@ def myadmin(request):
         return render(request, 'myadmin.html')
 
 
-@csrf_exempt
-def index(request):
-    if request.method == 'POST':
-        secret = data["SECRET_KEY"]
-        location = request.POST['location']
-        locationArr = location.split(',')
-        city = locationArr[0]
-        region = locationArr[1]
-        Location = location.objects.filter(city=city)
-        Attraction = attraction.objects.filter(location=location)
-        location = list(location)
-        return render(request, 'index.html', {"results": "yes", "location": location, "some_list": attraction})
-    else:
-        return render(request, 'index.html')
+# @csrf_exempt
+# def index(request):
+#     if request.method == 'POST':
+#         secret = data["SECRET_KEY"]
+#         Location = request.POST['location']
+#         # locationArr =? location.split(',')
+#         city = Location
+#         # region = locationArr[1]
+#         Location = location.objects.filter(city=city)
+#         Attraction = attraction.objects.filter(location=city)
+#         Location = list(location)
+#         return render(request, 'index.html', {"results": "yes", "location": Location, "some_list": Attraction})
+#     else:
+#         return render(request, 'index.html')
 
 
 def book(request):
