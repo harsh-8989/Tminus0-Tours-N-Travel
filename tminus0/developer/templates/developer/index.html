@@ -42,11 +42,11 @@
       <ul id="nav-mobile" class="sidenav">
         <li><a href="/">Tours&Travels</a></li>
         <li class="divider" tabindex="-1"></li>
-        <li><a href="/">Flights</a></li>
+        <li><a href="/flights">Flights</a></li>
         <li><a href="/hotels">Hotels</a></li>
         <li><a href="/trains">Trains</a></li>
-        <li><a href="/explore">Print</a></li>
-        <li><a href="/reviews">Review</a></li>
+        <li><a href="/print">Print</a></li>
+        <li><a href="/reviews">Reviews</a></li>
         <li><a class="purple-text" href="/index">User</a></li>
         <li class="divider" tabindex="-1"></li>
         {% if request.session.current_user %}        
@@ -111,12 +111,9 @@
 
     $('input.autocomplete').autocomplete({
       data: {
-        "New York City, NY": null,
-        "Los Angeles, CA": null,
-        "Boston, MA": null,
-        "Chicago, IL": null,
-        "Las Vegas, NV": null,
-        "Atlanta, GA": null
+        "New york": null,
+        "tokyo": null,
+        
       },
     });
   </script>

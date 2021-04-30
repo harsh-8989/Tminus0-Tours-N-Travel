@@ -30,9 +30,18 @@
     </div>
   
   {% if results %}
+  <div class="parallax-container valign-wrapper">
+    <div class="section no-pad-bot">
+      <div class="container">
+        <div class="row center">
+          <center><h5 class="header col s12 light" style="font-weight: 600;font-size: 3em; letter-spacing: 0.7em; text-transform: uppercase;">{{ location.0.city }}</h5></center>
+        </div>
+      </div>
+    </div>
+    <div class="parallax"><img src="{% static 'images/background2.jpg' %}" alt="Unsplashed background img 2"></div>
+  </div>
   <div class="container">
-  <center><h5 class="header col s12 light">{{ location.0.city }}</h5></center>
-    <div class="row center">
+  <div class="row center">
       <div><img src="{% static 'images/' %}{{location.0.image}}" 
              width="100%" alt="Card one"></div>
         {% for obj in some_list %}
