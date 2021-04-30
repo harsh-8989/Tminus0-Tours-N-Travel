@@ -190,6 +190,45 @@ def trains(request):
 
 
 @csrf_exempt
+def flights(request):
+    if request.method == 'POST':
+        secret = data["SECRET_KEY"]
+        source = request.POST['source']
+        # sourceArr = source.split(',')
+        # source = sourceArr[0]
+        destination = request.POST['destination']
+        # destinationArr = destination.split(',')
+        # destination = destinationArr[0]
+        startdate = request.POST['startdate']
+        startdate = startdate.split('-')
+        year = int(startdate[0])
+        month = int(startdate[1])
+        day = int(startdate[2])
+        flightClass = request.POST['class']
+        print(request.POST)
+        flights = flight.objects.filter(sourceLocation=source).filter(
+            destinationLocation=destination).filter(departureDate=datetime.date(year, month, day))
+        flights = list(flights)
+        if (flightClass == 'economy'):
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
+            flights = list(flights)
+            return render(request, 'flights.html', {"results": "yes", "some_list": flights, "class": flightClass})
+        elif (flightClass == 'business'):
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
+            flights = list(flights)
+            return render(request, 'flights.html', {"results": "yes", "some_list": flights, "class": flightClass})
+        else:
+            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
+                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
+            flights = list(flights)
+            return render(request, 'flights.html', {"results": "yes", "some_list": flights, "class": flightClass})
+    else:
+        return render(request, 'flights.html')
+
+
+@csrf_exempt
 def explore(request):
     if request.method == 'POST':
         secret = data["SECRET_KEY"]

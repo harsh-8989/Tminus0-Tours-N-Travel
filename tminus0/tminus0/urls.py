@@ -27,6 +27,7 @@ urlpatterns = [
     #path('login/', auth_views.login, {'template_name': 'login.html'}),
     path('signup/', views.signup, name='signup'),
     path('trains/', views.trains, name='trains'),
+    path('flights/', views.flights, name='flights'),
     path('hotels/', views.hotels, name='hotels'),
     path('explore/', views.explore, name='explore'),
     path('myadmin/', views.myadmin, name='myadmin'),
