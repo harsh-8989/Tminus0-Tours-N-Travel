@@ -16,6 +16,10 @@ data = json.loads(json_file)
 user_email = None
 numbooking = len(booking.objects.all())
 numpayment = len(payment.objects.all())
+# user_email = None
+
+# del request.session['current_user']
+# del request.session['user_name']
 
 
 @csrf_exempt
@@ -403,11 +407,20 @@ def book(request):
                 new_transaction = new_purchase
                 new_purchase.save()
         elif (bookType == 'hotel'):
-            obj = hotel.objects.filter(id=objId).first()
-            new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                     paymentAmount=obj.dailyCost, paymentCardNo=card_number, companyName=obj.companyName, location=obj.address)
+            numbooking = len(booking.objects.all())+1
+            numpayment = len(payment.objects.all())+1
+            # flight_ = flight.objects.get(id=1000)
+            hotel_ = hotel.objects.get(id=objId)
+            booking_ = booking.objects.create(id=numbooking,
+                                              startDate=current_date, Hotel=hotel_)
+            payment_ = payment.objects.create(id=numpayment,
+                                              paymentType=card_type, amount=(hotel_.dailyCost), cardNo=card_number)
+            # train.objects.filter(id=objId).update(
+            #     numSeatsRemainingBusiness=train_.numSeatsRemainingBusiness-1)
+            new_purchase = purchase.objects.create(
+                userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
             new_transaction = new_purchase
-            new_transaction.save()
+            new_purchase.save()
         return render(request, 'book.html', {'msg': 'Booking successful', 'obj': new_transaction})
     else:
         objId = request.GET.get('id')

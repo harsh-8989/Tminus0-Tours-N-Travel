@@ -53,6 +53,17 @@ class flight(models.Model):
         return str(self.id)
 
 
+class hotel(models.Model):
+    id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
+    dailyCost = models.DecimalField(max_digits=6, decimal_places=2)
+    address = models.CharField(max_length=30)
+    city = models.CharField(max_length=30)
+    companyName = models.CharField(max_length=30, default='hotel')
+
+    def __str__(self):
+        return self.companyName
+
+
 class train(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
     departureDate = models.DateField()
@@ -64,23 +75,6 @@ class train(models.Model):
     numSeatsRemainingEconomy = models.IntegerField()
     numSeatsRemainingBusiness = models.IntegerField()
     numSeatsRemainingFirst = models.IntegerField()
-
-    def __str__(self):
-        return str(self.id)
-
-
-class booking(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
-    startDate = models.DateTimeField(auto_now=True)
-    # TRANSPORTATION_TYPES = [('flight'), ('train')]
-    # classType = models.CharField(max_length=10)
-
-    Flight = models.ForeignKey(
-        flight, on_delete=models.CASCADE, default=None, null=True)
-    Train = models.ForeignKey(
-        train, on_delete=models.CASCADE, default=None, null=True)
-
-    # Type = models.CharField(max_length=10, default="")
 
     def __str__(self):
         return str(self.id)
@@ -105,22 +99,30 @@ class payment(models.Model):
         return str(self.id)
 
 
+class booking(models.Model):
+    id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
+    startDate = models.DateTimeField(auto_now=True)
+    # TRANSPORTATION_TYPES = [('flight'), ('train')]
+    # classType = models.CharField(max_length=10)
+
+    Flight = models.ForeignKey(
+        flight, on_delete=models.CASCADE, default=None, null=True)
+    Train = models.ForeignKey(
+        train, on_delete=models.CASCADE, default=None, null=True)
+    Hotel = models.ForeignKey(
+        hotel, on_delete=models.CASCADE, default=None, null=True)
+
+    # Type = models.CharField(max_length=10, default="")
+
+    def __str__(self):
+        return str(self.id)
+
+
 class purchase(models.Model):
     transactionDate = models.DateTimeField(auto_now=True)
     userID = models.ForeignKey(user, on_delete=models.CASCADE)
-    Type = models.CharField(max_length=10, default="")
+    Type = models.CharField(max_length=10, default="", null=True)
     bookingID = models.ForeignKey(
         booking, on_delete=models.CASCADE)
     paymentID = models.ForeignKey(
         payment, on_delete=models.CASCADE)
-
-
-class hotel(models.Model):
-    id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
-    dailyCost = models.DecimalField(max_digits=6, decimal_places=2)
-    address = models.CharField(max_length=30)
-    city = models.CharField(max_length=30)
-    companyName = models.CharField(max_length=30, default='hotel')
-
-    def __str__(self):
-        return self.companyName

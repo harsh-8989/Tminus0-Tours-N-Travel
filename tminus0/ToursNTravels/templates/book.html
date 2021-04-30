@@ -68,7 +68,7 @@
               
               <tr>
                 <th>Type</th>
-                <th>Transportation</th>
+                <th>Class</th>
                 <th>Source</th>
                 <th>Destination</th>
                 <th>Book Date</th>
@@ -80,17 +80,26 @@
 
               
               <tr>
-                <td>{{obj.Type}}</td>
-                {% if obj.bookingID.Flight != Null %}
-                <td>Flight</td>
-                <td>{{obj.bookingID.Flight.sourceLocation}}</td>
-                <td>{{obj.bookingID.Flight.destinationLocation}}</td>
-                {% else %}
-                <td>Train</td>
-                <td>{{obj.bookingID.Train.sourceLocation}}</td>
-                <td>{{obj.bookingID.Train.destinationLocation}}</td>
+                {% if obj.bookingID.Hotel != Null  %}
+                    <td>Hotel</td>
+                    <td>NULL</td>
+                    <td>NULL</td>
+                    <td>{{obj.bookingID.Hotel.city}}</td>
+                    
+                  {% elif obj.bookingID.Flight != Null %}
+                  <td>Flight</td>
+                  <td>{{obj.Type}}</td>
+                    
+                    <td>{{obj.bookingID.Flight.sourceLocation}}</td>
+                    <td>{{obj.bookingID.Flight.destinationLocation}}</td>
+                  {% else %}
+                  <td>Train</td>
+                  <td>{{obj.Type}}</td>
+                    
+                    <td>{{obj.bookingID.Train.sourceLocation}}</td>
+                    <td>{{obj.bookingID.Train.destinationLocation}}</td>
+                  
                 {% endif %}
-
                 <td>{{obj.transactionDate}}</td>
                 <td>Rs {{obj.paymentID.amount}}</td>
                 <td>{{obj.paymentID.cardNo}}</td>
