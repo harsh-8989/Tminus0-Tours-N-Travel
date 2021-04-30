@@ -38,10 +38,10 @@
         {% for obj in some_list %}
         <div class="col l4 m4 s12">
           <div class="card purple lighten-2">
-            <div><img src="{% static 'images/' %}{{obj.image}}" 
-             width="80%" alt="Card one"></div>
+            <div style="margin: 0.5em auto;"><img src="{% static 'images/' %}{{obj.image}}" 
+             width="100%" alt="Card one" style="padding: 1em;"></div>
             <div class="card-content white-text">
-              <span class="card-title">{{obj.attractionName}}</span>
+              <span class="card-title" style="padding: 0.2em; font-weight: 500;">{{obj.attractionName}}</span>
               <p>{{obj.attractionDescription}}</p>
             </div>
 
