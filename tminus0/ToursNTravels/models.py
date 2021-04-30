@@ -76,9 +76,11 @@ class booking(models.Model):
     # classType = models.CharField(max_length=10)
 
     Flight = models.ForeignKey(
-        flight, on_delete=models.CASCADE, default=None)
+        flight, on_delete=models.CASCADE, default=None, null=True)
     Train = models.ForeignKey(
-        train, on_delete=models.CASCADE, default=None)
+        train, on_delete=models.CASCADE, default=None, null=True)
+
+    # Type = models.CharField(max_length=10, default="")
 
     def __str__(self):
         return str(self.id)
@@ -106,6 +108,7 @@ class payment(models.Model):
 class purchase(models.Model):
     transactionDate = models.DateTimeField(auto_now=True)
     userID = models.ForeignKey(user, on_delete=models.CASCADE)
+    Type = models.CharField(max_length=10, default="")
     bookingID = models.ForeignKey(
         booking, on_delete=models.CASCADE)
     paymentID = models.ForeignKey(

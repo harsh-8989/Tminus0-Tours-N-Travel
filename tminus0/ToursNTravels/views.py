@@ -300,43 +300,43 @@ def book(request):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
                 flight_ = flight.objects.get(id=objId)
-                train_ = train.objects.get(id=1000)
+                # train_ = train.objects.get(id=1000)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date, Flight=flight_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=flight_.fareEconomy, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
                     numSeatsRemainingEconomy=flight_.numSeatsRemainingEconomy-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
             elif (travelClass == 'business'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
                 flight_ = flight.objects.get(id=objId)
-                train_ = train.objects.get(id=1000)
+                # train_ = train.objects.get(id=1000)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date, Flight=flight_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=flight_.fareBusiness, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
                     numSeatsRemainingBusiness=flight_.numSeatsRemainingBusiness-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
             elif (travelClass == 'first'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
                 flight_ = flight.objects.get(id=objId)
-                train_ = train.objects.get(id=1000)
+                # train_ = train.objects.get(id=1000)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date, Flight=flight_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=flight_.fareFirst, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
                     numSeatsRemainingFirst=flight_.numSeatsRemainingFirst-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
         elif (bookType == 'train'):
             travelClass = request.GET.get('class')
@@ -344,44 +344,44 @@ def book(request):
             if (travelClass == 'economy'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
-                flight_ = flight.objects.get(id=1000)
+                # flight_ = flight.objects.get(id=1000)
                 train_ = train.objects.get(id=objId)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date,  Train=train_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=train_.fareEconomy, cardNo=card_number)
                 train.objects.filter(id=objId).update(
                     numSeatsRemainingEconomy=train_.numSeatsRemainingEconomy-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
             elif (travelClass == 'business'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
-                flight_ = flight.objects.get(id=1000)
+                # flight_ = flight.objects.get(id=1000)
                 train_ = train.objects.get(id=objId)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date, Train=train_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=train_.fareBusiness, cardNo=card_number)
                 train.objects.filter(id=objId).update(
                     numSeatsRemainingBusiness=train_.numSeatsRemainingBusiness-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
             elif (travelClass == 'first'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
-                flight_ = flight.objects.get(id=1000)
+                # flight_ = flight.objects.get(id=1000)
                 train_ = train.objects.get(id=objId)
                 booking_ = booking.objects.create(id=numbooking,
-                                                  startDate=current_date, Flight=flight_, Train=train_)
+                                                  startDate=current_date,  Train=train_)
                 payment_ = payment.objects.create(id=numpayment,
                                                   paymentType=card_type, amount=train_.fareFirst, cardNo=card_number)
                 train.objects.filter(id=objId).update(
                     numSeatsRemainingFirst=train_.numSeatsRemainingFirst-1)
-                new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase = purchase.objects.create(Type=travelClass,
+                                                       userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
                 new_purchase.save()
         elif (bookType == 'hotel'):
             obj = hotel.objects.filter(id=objId).first()
