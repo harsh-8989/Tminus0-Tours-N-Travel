@@ -7,54 +7,17 @@ import jwt
 import json
 import datetime
 
-# from .models import user, location, flight, train, hotel, payment, attraction, review
-# from .models import history, user, location, review, transportation, booking, flight, train, hotel, purchase, payment, attraction
 from ToursNTravels.models import *
 numreview = len(review.objects.all())
-json_file = open('tminus0/config_vars.json').read()
-data = json.loads(json_file)
 user_email = None
+
 numbooking = len(booking.objects.all())
 numpayment = len(payment.objects.all())
-# user_email = None
-
-# del request.session['current_user']
-# del request.session['user_name']
 
 
 @csrf_exempt
 def index(request):
-    if request.method == 'POST':
-        secret = data["SECRET_KEY"]
-        source = request.POST['source']
-        destination = request.POST['destination']
-        startdate = request.POST['startdate']
-        startdate = startdate.split('-')
-        year = int(startdate[0])
-        month = int(startdate[1])
-        day = int(startdate[2])
-        flightClass = request.POST['class']
-        print(request.POST)
-        flights = flight.objects.filter(sourceLocation=source).filter(
-            destinationLocation=destination).filter(departureDate=datetime.date(year, month, day))
-        flights = list(flights)
-        if (flightClass == 'economy'):
-            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
-                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingEconomy__gt=0)
-            flights = list(flights)
-            return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
-        elif (flightClass == 'business'):
-            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
-                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingBusiness__gt=0)
-            flights = list(flights)
-            return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
-        else:
-            flights = flight.objects.filter(sourceLocation=source).filter(destinationLocation=destination).filter(
-                departureDate=datetime.date(year, month, day)).filter(numSeatsRemainingFirst__gt=0)
-            flights = list(flights)
-            return render(request, 'index.html', {"results": "yes", "some_list": flights, "class": flightClass})
-    else:
-        return render(request, 'index.html')
+    return render(request, 'index.html')
 
 
 @csrf_exempt
@@ -144,7 +107,6 @@ def reviews(request):
 @csrf_exempt
 def hotels(request):
     if request.method == 'POST':
-        secret = data["SECRET_KEY"]
         Location = request.POST['location']
         # locationArr = location.split(',')
         locationCity = Location
@@ -152,10 +114,6 @@ def hotels(request):
         enddate = request.POST['enddate']
         hotels = hotel.objects.filter(city=locationCity)
         hotels = list(hotels)
-        #decoded = jwt.verify((request.session.token), data["SECRET_KEY"]);
-        #valid = jwt.decode(encoded, secret, algorithms=['HS256'])
-        print(request.POST)
-        # return render(request, 'hotels.html', {'session': session})
         return render(request, 'hotels.html', {"results": "yes", "some_list": hotels})
     else:
         return render(request, 'hotels.html')
@@ -164,13 +122,8 @@ def hotels(request):
 @csrf_exempt
 def trains(request):
     if request.method == 'POST':
-        secret = data["SECRET_KEY"]
         source = request.POST['source']
-        # sourceArr = source.split(',')
-        # source = sourceArr[0]
         destination = request.POST['destination']
-        # destinationArr = destination.split(',')
-        # destination = destinationArr[0]
         startdate = request.POST['startdate']
         startdate = startdate.split('-')
         year = int(startdate[0])
@@ -203,13 +156,8 @@ def trains(request):
 @csrf_exempt
 def flights(request):
     if request.method == 'POST':
-        secret = data["SECRET_KEY"]
         source = request.POST['source']
-        # sourceArr = source.split(',')
-        # source = sourceArr[0]
         destination = request.POST['destination']
-        # destinationArr = destination.split(',')
-        # destination = destinationArr[0]
         startdate = request.POST['startdate']
         startdate = startdate.split('-')
         year = int(startdate[0])
@@ -242,11 +190,8 @@ def flights(request):
 @csrf_exempt
 def explore(request):
     if request.method == 'POST':
-        secret = data["SECRET_KEY"]
         Location = request.POST['location']
-        # locationArr = Location.split(',')
         city = Location
-        # region = locationArr[1]
         Location = location.objects.filter(city=city)
         temp = location.objects.get(city=city)
         Attraction = attraction.objects.filter(location=temp)
@@ -259,7 +204,6 @@ def explore(request):
 @csrf_exempt
 def myadmin(request):
     if request.method == 'POST':
-        secret = data["SECRET_KEY"]
         location = request.POST['location']
         locationArr = location.split(',')
         city = locationArr[0]
@@ -274,25 +218,7 @@ def myadmin(request):
 
 def print_invoice(request):
     purchase_ = purchase.objects.all()
-    # context= {'tans': purchase_}
-
-    print(type(purchase_))
     return render(request, 'developer/print.html', {'transactions': purchase_})
-
-# @csrf_exempt
-# def index(request):
-#     if request.method == 'POST':
-#         secret = data["SECRET_KEY"]
-#         Location = request.POST['location']
-#         # locationArr =? location.split(',')
-#         city = Location
-#         # region = locationArr[1]
-#         Location = location.objects.filter(city=city)
-#         Attraction = attraction.objects.filter(location=city)
-#         Location = list(location)
-#         return render(request, 'index.html', {"results": "yes", "location": Location, "some_list": Attraction})
-#     else:
-#         return render(request, 'index.html')
 
 
 def book(request):
@@ -311,13 +237,11 @@ def book(request):
 
         if (bookType == 'flight'):
             travelClass = request.GET.get('class')
-            # flight_=
 
             if (travelClass == 'economy'):
                 numbooking = len(booking.objects.all())+1
                 numpayment = len(payment.objects.all())+1
                 flight_ = flight.objects.get(id=objId)
-                # train_ = train.objects.get(id=1000)
                 booking_ = booking.objects.create(id=numbooking,
                                                   startDate=current_date, Flight=flight_)
                 payment_ = payment.objects.create(id=numpayment,
