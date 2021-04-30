@@ -33,19 +33,19 @@
             <p class="card-title">{{obj.departureDate}} @ {{obj.departureTime}}</p>
             <p class="card-title">
             {% if class == "economy" %}
-              <p>Economy ${{obj.fareEconomy}}</p>
+              <p>Economy Rs {{obj.fareEconomy}}</p>
               {% endif %}
               {% if class == "business" %}
-              <p>Business ${{obj.fareBusiness}}</p>
+              <p>Business Rs {{obj.fareBusiness}}</p>
               {% endif %}
               {% if class == "first" %}
-              <p>First ${{obj.fareFirst}}</p>
+              <p>First Rs {{obj.fareFirst}}</p>
               {% endif %}
             {% endif %}
           </p>
             {% if type == "hotel" %}
             <p class="card-title">{{obj.address}} {{obj.city}}</p>
-            <p class="card-title">${{obj.dailyCost}}</p>
+            <p class="card-title">Rs {{obj.dailyCost}}</p>
             {% endif %}
           {% endfor %}
         </div>
@@ -92,7 +92,7 @@
                 {% endif %}
 
                 <td>{{obj.transactionDate}}</td>
-                <td>${{obj.paymentID.amount}}</td>
+                <td>Rs {{obj.paymentID.amount}}</td>
                 <td>{{obj.paymentID.cardNo}}</td>
               </tr>
             </table>
