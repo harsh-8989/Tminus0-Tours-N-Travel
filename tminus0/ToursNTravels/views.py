@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.http import Http404
 from django.views.decorators.csrf import csrf_exempt
 from developer.models import user_admin
+from django.shortcuts import redirect
 import jwt
 import json
 import datetime
@@ -18,6 +19,45 @@ numpayment = len(payment.objects.all())
 @csrf_exempt
 def index(request):
     return render(request, 'index.html')
+
+
+def change_password(request):
+    if request.method == 'POST':
+        email = request.POST['email']
+        oldpassword = request.POST['oldPassword']
+        newpassword = request.POST['newPassword']
+        try:
+            auth = user_admin.objects.get(email=email)
+        except user_admin.DoesNotExist:
+            auth = None
+        if auth is not None:
+            try:
+                auth = user_admin.objects.get(
+                    email=email, password=oldpassword)
+            except user_admin.DoesNotExist:
+                auth = None
+            if auth is not None:
+                user_admin.objects.filter(email=email).update(
+                    password=newpassword
+                )
+                return render(request, 'login.html', {'msg': 'Password Changed Successfully'})
+            else:
+                return render(request, 'change_pass.html', {'msg': 'Password Changed UnSuccessful'})
+        check_user = user.objects.filter(email=email, password=oldpassword)
+        valid_user = (len(list(check_user)) == 1)
+        if (valid_user):
+            current_user = email
+            # user_name = check_user.first().username
+            user.objects.filter(email=email).update(
+                password=newpassword
+            )
+            return render(request, 'login.html', {'msg': 'Password Changed Successfully'})
+        else:
+            return render(request, 'change_pass.html', {'msg': 'Password Changed UnSuccessful'})
+            # request.session['current_user'] = current_user
+            # request.session['user_name'] = user_name
+
+    return render(request, 'change_pass.html')
 
 
 @csrf_exempt
@@ -44,7 +84,7 @@ def login(request):
                 return render(request, 'developer/index.html')
             else:
                 return render(request, 'login.html')
-        check_user = user.objects.filter(email=email)
+        check_user = user.objects.filter(email=email, password=password)
         valid_user = (len(list(check_user)) == 1)
         if (valid_user):
             current_user = email
@@ -52,7 +92,8 @@ def login(request):
             request.session['current_user'] = current_user
             request.session['user_name'] = user_name
             #encoded = jwt.encode(payload, secret, algorithm='HS256')
-            return render(request, 'explore.html', {'msg': 'Login successful'})
+            return redirect('explore')
+            # return render(request, 'explore.html', {'msg': 'Login successful'})
         else:
             return render(request, 'login.html', {'msg': 'Failed. Please try again'})
     else:

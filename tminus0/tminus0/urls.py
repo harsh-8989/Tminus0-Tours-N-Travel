@@ -26,6 +26,7 @@ urlpatterns = [
     path("tminus0admin/", include('developer.urls')),
     path("print/", views.print_invoice),
     path('login/', views.login, name='login'),
+    path('change_pass/', views.change_password, name='change_pass'),
     #path('login/', auth_views.login, {'template_name': 'login.html'}),
     path('signup/', views.signup, name='signup'),
     path('trains/', views.trains, name='trains'),
