@@ -38,12 +38,11 @@
         </div>
       </div>
     </div>
-    <div class="parallax"><img src="{% static 'images/background2.jpg' %}" alt="Unsplashed background img 2"></div>
+    <div class="parallax"><img src="{% static 'images/' %}{{location.0.image}}" alt="Unsplashed background img 2"></div>
   </div>
   <div class="container">
   <div class="row center">
-      <div><img src="{% static 'images/' %}{{location.0.image}}" 
-             width="100%" alt="Card one"></div>
+      <br>
         {% for obj in some_list %}
         <div class="col l4 m4 s12">
           <div class="card purple lighten-2">
