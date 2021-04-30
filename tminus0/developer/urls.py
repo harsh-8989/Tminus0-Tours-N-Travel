@@ -4,5 +4,5 @@ from developer import views
 
 urlpatterns = [
     path("admin_login", views.index),
-    path("/print", views.print)
+    # path("/print", views.print)
 ]

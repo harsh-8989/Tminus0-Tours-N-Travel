@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+from ToursNTravels.models import *
 
 
 def index(request):
@@ -8,4 +9,5 @@ def index(request):
 
 
 def print(request):
-    return render(request, 'developer/print.html')
+    purchase_ = purchase.objects.all()
+    return render(request, 'developer/print.html', {'transtions': purchase_})

@@ -58,6 +58,7 @@
 
         
         <center>
+          
         {% if msg %}
           {{ msg }}
               
@@ -94,8 +95,8 @@
                 <td>${{obj.paymentID.amount}}</td>
                 <td>{{obj.paymentID.cardNo}}</td>
               </tr>
-        
-          
+            </table>
+          </div>
         {% endif %}
       </center>
       <br><br>
@@ -103,7 +104,7 @@
       </div>
     </div>
   </div>
-  
+  {% endblock content %}
   <!-- {% if results %}
     <div class="row center">
       <div class="container">
@@ -206,4 +207,3 @@
   </div>
   {% endif %} -->
 
-{% endblock content %}
