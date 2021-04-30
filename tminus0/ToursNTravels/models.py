@@ -17,6 +17,7 @@ class location(models.Model):
     city = models.CharField(max_length=30)
     region = models.CharField(max_length=2)
     country = models.CharField(max_length=2, default='US')
+    image = models.CharField(max_length=200)
 
     def __str__(self):
         return self.city
@@ -72,6 +73,8 @@ class booking(models.Model):
     id = models.IntegerField(auto_created=True, primary_key=True, unique=True)
     startDate = models.DateTimeField(auto_now=True)
     # TRANSPORTATION_TYPES = [('flight'), ('train')]
+    # classType = models.CharField(max_length=10)
+
     Flight = models.ForeignKey(
         flight, on_delete=models.CASCADE, default=None)
     Train = models.ForeignKey(

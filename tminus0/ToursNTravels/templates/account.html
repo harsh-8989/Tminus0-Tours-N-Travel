@@ -63,7 +63,7 @@
                     </tr>
                     <tr>
                       <th>Type</th>
-                      <th>Company</th>
+                      <th>Source</th>
                       <th>Destination</th>
                       <th>Book Date</th>
                       <th>Total</th>
@@ -73,12 +73,12 @@
                   <tbody>
                     {% for obj in transactions %}
                     <tr>
-                      <td>{{obj.bookingType}}</td>
-                      <td>{{obj.companyName}}</td>
-                      <td>{{obj.location}}</td>
-                      <td>{{obj.bookingStartDate}}</td>
-                      <td>${{obj.paymentAmount}}</td>
-                      <td>{{obj.paymentCardNo}}</td>
+                      <td>{{obj.bookingID.classType}}</td>
+                      <td>{{obj.bookingID.Flight.sourceLocation}}</td>
+                      <td>{{obj.bookingID.Flight.destinationLocation}}</td>
+                      <td>{{obj.transactionDate}}</td>
+                      <td>${{obj.paymentID.amount}}</td>
+                      <td>{{obj.paymentID.cardNo}}</td>
                     </tr>
                     {% endfor %}
                   </tbody>

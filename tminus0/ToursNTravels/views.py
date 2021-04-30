@@ -14,6 +14,8 @@ numreview = len(review.objects.all())
 json_file = open('tminus0/config_vars.json').read()
 data = json.loads(json_file)
 user_email = None
+numbooking = len(booking.objects.all())
+numpayment = len(payment.objects.all())
 
 
 @csrf_exempt
@@ -78,7 +80,7 @@ def login(request):
             request.session['current_user'] = current_user
             request.session['user_name'] = user_name
             #encoded = jwt.encode(payload, secret, algorithm='HS256')
-            return render(request, 'login.html', {'msg': 'Login successful'})
+            return render(request, 'explore.html', {'msg': 'Login successful'})
         else:
             return render(request, 'login.html', {'msg': 'Failed. Please try again'})
     else:
@@ -278,6 +280,8 @@ def myadmin(request):
 
 
 def book(request):
+    global numbooking
+    global numpayment
     if request.method == 'POST':
         objId = request.GET.get('id')
         bookType = request.GET.get('type')
@@ -291,50 +295,94 @@ def book(request):
         if (bookType == 'flight'):
             travelClass = request.GET.get('class')
             # flight_=
-            flight_ = flight.objects.get(id=objId)
 
             if (travelClass == 'economy'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=objId)
+                train_ = train.objects.get(id=1000)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=flight_.fareEconomy, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
                     numSeatsRemainingEconomy=flight_.numSeatsRemainingEconomy-1)
-
-                # new_transaction = purchase.objects.create(userId=current_user, bookingType=bookType, bookingStartDate=current_date,
-                #                                          paymentAmount=obj.fareEconomy, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
                 new_purchase = purchase.objects.create(
-                    userID=current_user, transactionDate=current_date,)
-                new_transaction.save()
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
             elif (travelClass == 'business'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=objId)
+                train_ = train.objects.get(id=1000)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=flight_.fareBusiness, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
-                    numSeatsRemainingBusiness=obj.numSeatsRemainingBusiness-1)
-                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                         paymentAmount=obj.fareBusiness, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
-                new_transaction.save()
+                    numSeatsRemainingBusiness=flight_.numSeatsRemainingBusiness-1)
+                new_purchase = purchase.objects.create(
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
             elif (travelClass == 'first'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=objId)
+                train_ = train.objects.get(id=1000)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=flight_.fareFirst, cardNo=card_number)
                 flight.objects.filter(id=objId).update(
-                    numSeatsRemainingFirst=obj.numSeatsRemainingFirst-1)
-                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                         paymentAmount=obj.fareFirst, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
-                new_transaction.save()
+                    numSeatsRemainingFirst=flight_.numSeatsRemainingFirst-1)
+                new_purchase = purchase.objects.create(
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
         elif (bookType == 'train'):
             travelClass = request.GET.get('class')
             obj = train.objects.filter(id=objId).first()
             if (travelClass == 'economy'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=1000)
+                train_ = train.objects.get(id=objId)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=train_.fareEconomy, cardNo=card_number)
                 train.objects.filter(id=objId).update(
-                    numSeatsRemainingEconomy=obj.numSeatsRemainingEconomy-1)
-                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                         paymentAmount=obj.fareEconomy, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
-                new_transaction.save()
+                    numSeatsRemainingEconomy=train_.numSeatsRemainingEconomy-1)
+                new_purchase = purchase.objects.create(
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
             elif (travelClass == 'business'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=1000)
+                train_ = train.objects.get(id=objId)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=train_.fareBusiness, cardNo=card_number)
                 train.objects.filter(id=objId).update(
-                    numSeatsRemainingBusiness=obj.numSeatsRemainingBusiness-1)
-                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                         paymentAmount=obj.fareBusiness, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
-                new_transaction.save()
+                    numSeatsRemainingBusiness=train_.numSeatsRemainingBusiness-1)
+                new_purchase = purchase.objects.create(
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
             elif (travelClass == 'first'):
+                numbooking = len(booking.objects.all())+1
+                numpayment = len(payment.objects.all())+1
+                flight_ = flight.objects.get(id=1000)
+                train_ = train.objects.get(id=objId)
+                booking_ = booking.objects.create(id=numbooking,
+                                                  startDate=current_date, Flight=flight_, Train=train_)
+                payment_ = payment.objects.create(id=numpayment,
+                                                  paymentType=card_type, amount=train_.fareFirst, cardNo=card_number)
                 train.objects.filter(id=objId).update(
-                    numSeatsRemainingFirst=obj.numSeatsRemainingFirst-1)
-                new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
-                                                         paymentAmount=obj.fareFirst, paymentCardNo=card_number, companyName=obj.companyName, location=obj.destinationLocation)
-                new_transaction.save()
+                    numSeatsRemainingFirst=train_.numSeatsRemainingFirst-1)
+                new_purchase = purchase.objects.create(
+                    userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_purchase.save()
         elif (bookType == 'hotel'):
             obj = hotel.objects.filter(id=objId).first()
             new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
@@ -362,8 +410,10 @@ def book(request):
 def account(request):
     setting = request.GET.get('setting')
     current_user = request.session['current_user']
+    user_ = user.objects.get(email=current_user)
     if (setting == 'history'):
-        History = purchase.objects.filter(userEmail=current_user)
+        History = purchase.objects.filter(userID=user_)
+
         return render(request, 'account.html', {'setting': setting, 'transactions': History})
     else:
         return render(request, 'account.html', {'setting': setting})
@@ -374,4 +424,4 @@ def logout(request):
     user_email = None
     del request.session['current_user']
     del request.session['user_name']
-    return render(request, 'login.html', {'msg': 'Logout successful'})
+    return render(request, 'index.html', {'msg': 'Logout successful'})
