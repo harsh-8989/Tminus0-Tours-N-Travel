@@ -56,6 +56,49 @@
   </nav>
 
   {% block content %}
+
+    <center>
+      <div class="col l9 s8">
+        <table class="stripped">
+          <thead>
+            
+            <tr>
+              <th>User</th>
+              <th>Type</th>
+              <th>Transportation</th>
+              <th>Source</th>
+              <th>Destination</th>
+              <th>Book Date</th>
+              <th>Total</th>
+              <th>Card Number</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            {% for obj in transactions  %}
+            
+            <tr>
+              <td>{{obj.userID.email}}</td>
+              <td>{{obj.Type}}</td>
+              {% if obj.bookingID.Flight != Null %}
+              <td>Flight</td>
+              <td>{{obj.bookingID.Flight.sourceLocation}}</td>
+              <td>{{obj.bookingID.Flight.destinationLocation}}</td>
+              {% else %}
+              <td>Train</td>
+              <td>{{obj.bookingID.Train.sourceLocation}}</td>
+              <td>{{obj.bookingID.Train.destinationLocation}}</td>
+              {% endif %}
+
+              <td>{{obj.transactionDate}}</td>
+              <td>${{obj.paymentID.amount}}</td>
+              <td>{{obj.paymentID.cardNo}}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+    </center>
+    
   {% endblock content %}
 
   <footer class="page-footer purple">

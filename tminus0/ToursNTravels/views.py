@@ -268,6 +268,13 @@ def myadmin(request):
         return render(request, 'myadmin.html')
 
 
+def print_invoice(request):
+    purchase_ = purchase.objects.all()
+    # context= {'tans': purchase_}
+
+    print(type(purchase_))
+    return render(request, 'developer/print.html', {'transactions': purchase_})
+
 # @csrf_exempt
 # def index(request):
 #     if request.method == 'POST':
