@@ -69,6 +69,11 @@ def login(request):
             except user_admin.DoesNotExist:
                 auth = None
             if auth is not None:
+                check_user = user_admin.objects.filter(email=email)
+                current_user = email
+                user_name = check_user.first().username
+                request.session['current_user'] = current_user
+                request.session['user_name'] = user_name
                 return render(request, 'developer/index.html')
             else:
                 return render(request, 'login.html')
@@ -283,6 +288,7 @@ def book(request):
     global numbooking
     global numpayment
     if request.method == 'POST':
+        new_transaction = None
         objId = request.GET.get('id')
         bookType = request.GET.get('type')
         card_number = request.POST['card_number']
@@ -309,6 +315,7 @@ def book(request):
                     numSeatsRemainingEconomy=flight_.numSeatsRemainingEconomy-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
             elif (travelClass == 'business'):
                 numbooking = len(booking.objects.all())+1
@@ -323,6 +330,7 @@ def book(request):
                     numSeatsRemainingBusiness=flight_.numSeatsRemainingBusiness-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
             elif (travelClass == 'first'):
                 numbooking = len(booking.objects.all())+1
@@ -337,6 +345,7 @@ def book(request):
                     numSeatsRemainingFirst=flight_.numSeatsRemainingFirst-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
         elif (bookType == 'train'):
             travelClass = request.GET.get('class')
@@ -354,6 +363,7 @@ def book(request):
                     numSeatsRemainingEconomy=train_.numSeatsRemainingEconomy-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
             elif (travelClass == 'business'):
                 numbooking = len(booking.objects.all())+1
@@ -368,6 +378,7 @@ def book(request):
                     numSeatsRemainingBusiness=train_.numSeatsRemainingBusiness-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
             elif (travelClass == 'first'):
                 numbooking = len(booking.objects.all())+1
@@ -382,13 +393,15 @@ def book(request):
                     numSeatsRemainingFirst=train_.numSeatsRemainingFirst-1)
                 new_purchase = purchase.objects.create(Type=travelClass,
                                                        userID=current_user, transactionDate=current_date, bookingID=booking_, paymentID=payment_)
+                new_transaction = new_purchase
                 new_purchase.save()
         elif (bookType == 'hotel'):
             obj = hotel.objects.filter(id=objId).first()
             new_transaction = history.objects.create(userEmail=current_user, bookingType=bookType, bookingStartDate=current_date,
                                                      paymentAmount=obj.dailyCost, paymentCardNo=card_number, companyName=obj.companyName, location=obj.address)
+            new_transaction = new_purchase
             new_transaction.save()
-        return render(request, 'book.html', {'msg': 'Booking successful'})
+        return render(request, 'book.html', {'msg': 'Booking successful', 'obj': new_transaction})
     else:
         objId = request.GET.get('id')
         bookType = request.GET.get('type')
@@ -411,9 +424,9 @@ def account(request):
     setting = request.GET.get('setting')
     current_user = request.session['current_user']
     user_ = user.objects.get(email=current_user)
+
     if (setting == 'history'):
         History = purchase.objects.filter(userID=user_)
-
         return render(request, 'account.html', {'setting': setting, 'transactions': History})
     else:
         return render(request, 'account.html', {'setting': setting})

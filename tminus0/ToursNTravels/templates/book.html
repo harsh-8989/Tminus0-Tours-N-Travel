@@ -60,6 +60,42 @@
         <center>
         {% if msg %}
           {{ msg }}
+              
+        <div class="col l9 s8">
+          <table class="stripped">
+            <thead>
+              
+              <tr>
+                <th>Type</th>
+                <th>Transportation</th>
+                <th>Source</th>
+                <th>Destination</th>
+                <th>Book Date</th>
+                <th>Total</th>
+                <th>Card Number</th>
+              </tr>
+            </thead>
+            <tbody>
+
+              
+              <tr>
+                <td>{{obj.Type}}</td>
+                {% if obj.bookingID.Flight != Null %}
+                <td>Flight</td>
+                <td>{{obj.bookingID.Flight.sourceLocation}}</td>
+                <td>{{obj.bookingID.Flight.destinationLocation}}</td>
+                {% else %}
+                <td>Train</td>
+                <td>{{obj.bookingID.Train.sourceLocation}}</td>
+                <td>{{obj.bookingID.Train.destinationLocation}}</td>
+                {% endif %}
+
+                <td>{{obj.transactionDate}}</td>
+                <td>${{obj.paymentID.amount}}</td>
+                <td>{{obj.paymentID.cardNo}}</td>
+              </tr>
+        
+          
         {% endif %}
       </center>
       <br><br>
@@ -68,7 +104,7 @@
     </div>
   </div>
   
-  {% if results %}
+  <!-- {% if results %}
     <div class="row center">
       <div class="container">
         {% for obj in some_list %}
@@ -168,6 +204,6 @@
 
     </div>
   </div>
-  {% endif %}
+  {% endif %} -->
 
 {% endblock content %}
