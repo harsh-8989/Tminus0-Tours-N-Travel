@@ -75,9 +75,9 @@ WSGI_APPLICATION = 'tminus0.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'ToursNTravels',
+        'NAME': 'ToursNTravel',
         'USER': 'postgres',
-        'PASSWORD': "chetan7@IIITA",
+        'PASSWORD': "password",
         'HOST': 'localhost',
         'PORT': '5432'
     }
