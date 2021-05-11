@@ -32,8 +32,14 @@ pip3 or pip install -r requirements.txt
 # For setting up the Database
 
 - First create a database in postgreSQL named as ‘ToursNTravel’.
+
 - We have created a backup of our own database (which includes the information about travel destinations and flights, trains and hotels schedules we are providing for this project) that you can restore .
+- 
+![postgres](https://github.com/harsh-8989/Tminus0-Tours-N-Travel/blob/main/images%20readme/Web%20capture_11-5-2021_23840_docs.google.com.jpeg)
+![postgres](https://github.com/harsh-8989/Tminus0-Tours-N-Travel/blob/main/images%20readme/Web%20capture_11-5-2021_23859_docs.google.com.jpeg)
+
 - Then open settings.py in the code editor and change the database information, particularly username and password which you have set in your postgres.
+![settings.py](https://github.com/harsh-8989/Tminus0-Tours-N-Travel/blob/main/images%20readme/Web%20capture_11-5-2021_23918_docs.google.com.jpeg)
 - Now run the following commands - 
  
 
