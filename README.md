@@ -49,7 +49,7 @@ Voila, now you must have landed at the homepage of our website Tours & Travels.
 To book any flight, train or hotel you must be logged in. Flights, trains, and hotels are limited to the destinations and dates we have picked. So please use the dummy data provided below.
 **All the fields are case sensitive.
 
-Explore:
+Destinations added - 
 1.	Tokyo
 2.	New York
 3.	Sydney
