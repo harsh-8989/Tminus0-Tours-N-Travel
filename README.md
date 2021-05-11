@@ -87,7 +87,7 @@ Hotels -
 | TMinus0	| Seoul	| SeoulCity |
 | TMinus0	| Sydney	| SydneyCity |
 | TMinus0	| New York	| NewYorkCity |
-| TMinus0	| Ladakh	| Ladakh |
+| TMinus0	| Ladakh	| LadakhCity |
 
 
 
