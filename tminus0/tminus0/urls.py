@@ -38,5 +38,7 @@ urlpatterns = [
     path('book/', views.book, name='book'),
     path('account/', views.account, name='account'),
     path('reviews/', views.reviews, name='reviews'),
-    path('logout/', views.logout, name='logout')
+    path('logout/', views.logout, name='logout'),
+    path('flight_prediction/', views.home, name=""),
+    path('flight_prediction/predict/', views.predict, name="")
 ]
