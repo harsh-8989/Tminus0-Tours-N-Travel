@@ -25,7 +25,7 @@
 
 ```sh
 git clone https://github.com/harsh-8989/Tminus0-Tours-N-Travel.git
-cd Tminus0-Tours-N-Travels
+cd Tminus0-Tours-N-Travel
 pip3 or pip install -r requirements.txt
 
 ```
