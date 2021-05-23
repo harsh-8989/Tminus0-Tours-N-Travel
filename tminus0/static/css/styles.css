@@ -1,14 +1,22 @@
 body {
-    background-color: #e1f4f3;
+    background-color: #fff;
     text-align: center;
 }
 
 .navbar {
-    background-color: #333333;
+    background-color: #f0f0f0;
+}
+
+.purple-text{
+    color: #9c27b0;
+}
+
+.purple{
+    background-color: #9c27b0;
 }
 
 a {
-    color: #f1f9f9;
+    color: #9c27b0;
 }
 
 a:hover {
